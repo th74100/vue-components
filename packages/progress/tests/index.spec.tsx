@@ -60,4 +60,31 @@ describe('progress semantics', () => {
       'role': 'progressbar',
     })
   })
+
+  it('supports semantic classNames and styles for line progress', () => {
+    const wrapper = mount(Line, {
+      props: {
+        percent: [20, 30],
+        className: 'custom',
+        classNames: { root: 'my-root', rail: 'my-rail', track: 'my-track' },
+        styles: {
+          root: { width: '200px' },
+          rail: { opacity: '0.5' },
+          track: { opacity: '0.8' },
+        },
+      },
+    })
+    const root = wrapper.find('svg')
+    expect(root.classes()).toEqual(['vc-progress-line', 'my-root', 'custom'])
+    expect(root.element.style.width).toBe('200px')
+    const rail = wrapper.find('.vc-progress-line-rail')
+    expect(rail.classes()).toContain('my-rail')
+    expect((rail.element as SVGElement).style.opacity).toBe('0.5')
+    const tracks = wrapper.findAll('.vc-progress-line-path')
+    expect(tracks).toHaveLength(2)
+    tracks.forEach((track) => {
+      expect(track.classes()).toContain('my-track')
+      expect((track.element as SVGElement).style.opacity).toBe('0.8')
+    })
+  })
 })

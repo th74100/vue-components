@@ -16,8 +16,8 @@ const Line = defineComponent<ProgressProps>(
       const {
         id,
         className,
-        classNames,
-        styles,
+        classNames = {},
+        styles = {},
         percent,
         prefixCls,
         strokeColor,
@@ -54,24 +54,23 @@ const Line = defineComponent<ProgressProps>(
           role="presentation"
           {...restProps}
           {...restAttrs}
-          class={{
-            [`${prefixCls}-line`]: true,
-            className,
-          }}
+          class={[`${prefixCls}-line`, classNames.root, className]}
           preserveAspectRatio="none"
           viewBox={viewBoxString}
-          style={style}
+          style={{
+            ...styles.root,
+            ...style,
+          }}
           id={id}
         >
           <path
-            class={[
-              `${prefixCls}-line-rail`,
-            ]}
+            class={[`${prefixCls}-line-rail`, classNames.rail]}
             d={pathString}
             stroke-linecap={strokeLinecap}
             stroke={railColor}
             stroke-width={railWidth ?? strokeWidth}
             fill-opacity="0"
+            style={styles.rail}
           />
           {
             percentList.map((ptg, index) => {
@@ -99,7 +98,7 @@ const Line = defineComponent<ProgressProps>(
               return (
                 <path
                   key={index}
-                  class={`${prefixCls}-line-path`}
+                  class={[`${prefixCls}-line-path`, classNames.track]}
                   d={pathString}
                   stroke-linecap={strokeLinecap}
                   stroke={color as string}
@@ -112,7 +111,7 @@ const Line = defineComponent<ProgressProps>(
                     // Refs are guaranteed to be up-to-date before componentDidMount or componentDidUpdate fires.
                     paths.value[index] = getDOM(elem) as SVGPathElement
                   }}
-                  style={pathStyle}
+                  style={{ ...pathStyle, ...styles.track }}
                 />
               )
             })
