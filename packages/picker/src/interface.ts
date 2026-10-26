@@ -1,4 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@v-c/trigger'
+import type { AllowClearConfig } from '@v-c/util'
 import type { VueNode } from '@v-c/util/dist/type'
 import type { CSSProperties, DefineComponent, HTMLAttributes, InputHTMLAttributes, VNode } from 'vue'
 import type { GenerateConfig } from './generate'
@@ -388,11 +389,7 @@ export interface SharedPickerProps<DateType extends object = any>
   suffix?: VueNode
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: VueNode
-  allowClear?:
-    | boolean
-    | {
-      clearIcon?: VueNode
-    }
+  allowClear?: boolean | AllowClearConfig
 
   /** @deprecated Please use `allowClear.clearIcon` instead */
   clearIcon?: VueNode
@@ -516,7 +513,7 @@ export interface SelectorProps<DateType = any> extends Omit<SharedHTMLAttrs, 'on
   picker: PickerMode
 
   prefix?: VueNode
-  clearIcon?: VueNode
+  clearConfig: AllowClearConfig
   suffix?: VueNode
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: VueNode

@@ -6,6 +6,8 @@ import { usePickerContext } from '../context'
 
 export interface ClearIconProps {
   icon?: VueNode
+  label?: string
+  tabIndex?: number
   onClear: VoidFunction
 }
 
@@ -29,7 +31,8 @@ const ClearIcon = defineComponent<ClearIconProps>((props, { attrs }) => {
       <button
         {...restAttrs}
         type="button"
-        aria-label={locale.clear}
+        tabindex={props.tabIndex}
+        aria-label={props.label ?? locale.clear ?? 'Clear'}
         class={clsx(`${prefixCls}-clear`, classNames.suffix, attrClass)}
         style={{ ...(styles.suffix || {}), ...mergedAttrStyle }}
         onMousedown={(e: MouseEvent) => {

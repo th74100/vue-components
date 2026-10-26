@@ -4,6 +4,7 @@ import type { InputRef } from '../Input'
 import { clsx, isVueRenderable } from '@v-c/util'
 import { computed, defineComponent, ref, toRef } from 'vue'
 import { isSame } from '../../../utils/dateUtil'
+import { pickProps } from '../../../utils/miscUtil'
 import { usePickerContext } from '../../context'
 import ClearIcon from '../ClearIcon'
 import useInputProps from '../hooks/useInputHooks'
@@ -11,7 +12,6 @@ import useRootProps from '../hooks/useRootProps'
 import Icon from '../Icon'
 import Input from '../Input'
 import MultipleDates from './MultipleDates'
-import { pickProps } from '../../../utils/miscUtil'
 
 export interface SingleSelectorProps<DateType extends object = any> extends SelectorProps<DateType> {
   id?: string
@@ -122,7 +122,7 @@ const SingleSelector = defineComponent<SingleSelectorProps>(
     return () => {
       const {
         prefix,
-        clearIcon,
+        clearConfig,
         suffix,
         placeholder,
         onClick,
@@ -139,7 +139,18 @@ const SingleSelector = defineComponent<SingleSelectorProps>(
         tabIndex,
       } = props
 
-      const showClear = isVueRenderable(clearIcon) && !!value?.length && !disabled
+      const showClear = !clearConfig.disabled
+        && isVueRenderable(clearConfig.clearIcon)
+        && !!value?.length
+        && !disabled
+      const clearNode = showClear && (
+        <ClearIcon
+          icon={clearConfig.clearIcon}
+          tabIndex={clearConfig.tabIndex}
+          label={clearConfig.label}
+          onClear={onClear as any}
+        />
+      )
 
       // ======================= Multiple =======================
       const selectorNode = multiple
@@ -165,7 +176,7 @@ const SingleSelector = defineComponent<SingleSelectorProps>(
                 tabindex={tabIndex as any}
               />
               <Icon icon={suffix} />
-              {showClear && <ClearIcon icon={clearIcon} onClear={onClear as any} />}
+              {clearNode}
             </>
           )
         : (
@@ -175,7 +186,7 @@ const SingleSelector = defineComponent<SingleSelectorProps>(
               autofocus={autoFocus}
               tabindex={tabIndex}
               suffix={suffix}
-              clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear as any} />}
+              clearIcon={clearNode}
               showActiveCls={false}
             />
           )

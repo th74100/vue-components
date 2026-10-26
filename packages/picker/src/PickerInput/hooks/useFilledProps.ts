@@ -1,8 +1,9 @@
+import type { AllowClearConfig } from '@v-c/util'
 import type { ComputedRef, Ref } from 'vue'
 import type { FormatType, InternalMode, PickerMode } from '../../interface'
 import type { RangePickerProps } from '../RangePicker'
 import type { PickerProps } from '../SinglePicker'
-import { isVueRenderable, warning } from '@v-c/util'
+import { isVueRenderable, useAllowClear, warning } from '@v-c/util'
 import { computed, toRef } from 'vue'
 import useLocale from '../../hooks/useLocale'
 import { fillShowTimeConfig, getTimeProps } from '../../hooks/useTimeConfig'
@@ -75,6 +76,7 @@ type FilledProps<
 > = Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'>
   & UpdaterProps & {
     picker: PickerMode
+    clearConfig: AllowClearConfig
     showTime?: ExcludeBooleanType<InProps['showTime']>
     value?: ToArrayType<InProps['value'], DateType>
     defaultValue?: ToArrayType<InProps['value'], DateType>
@@ -220,6 +222,8 @@ export default function useFilledProps<
     return suffix ?? suffixIcon
   })
 
+  const clearConfig = useAllowClear(() => props.value.allowClear ?? true)
+
   // ======================== Props =========================
   const filledProps = computed(() => ({
     // Only forward props that are actually set: every downstream layer
@@ -234,11 +238,16 @@ export default function useFilledProps<
     order: mergedOrder.value,
     components: mergedComponents.value,
     suffix: mergedSuffix.value,
-    clearIcon: fillClearIcon(
-      mergedPrefixCls.value,
-      props.value.allowClear,
-      props.value.clearIcon,
-    ),
+    // Legacy `clearIcon` is merged into `clearConfig`; do not leak it to the selector.
+    clearIcon: undefined,
+    clearConfig: {
+      ...clearConfig.value,
+      clearIcon: fillClearIcon(
+        mergedPrefixCls.value,
+        clearConfig.value,
+        props.value.clearIcon,
+      ),
+    } as AllowClearConfig,
     showTime: mergedShowTime.value,
     value: values.value,
     defaultValue: defaultValues.value,

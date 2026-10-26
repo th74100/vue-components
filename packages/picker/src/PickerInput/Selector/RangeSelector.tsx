@@ -140,7 +140,8 @@ const RangeSelector = defineComponent(
 
     // ======================== Clear =========================
     const showClear = computed(() =>
-      isVueRenderable(props.clearIcon)
+      !props.clearConfig.disabled
+      && isVueRenderable(props.clearConfig.clearIcon)
       && ((props.value?.[0] && !props.disabled?.[0]) || (props.value?.[1] && !props.disabled?.[1])),
     )
 
@@ -158,7 +159,7 @@ const RangeSelector = defineComponent(
       const {
         prefix,
         suffix,
-        clearIcon,
+        clearConfig,
         separator,
         disabled,
         invalid,
@@ -226,7 +227,14 @@ const RangeSelector = defineComponent(
             />
             <div class={`${prefixCls.value}-active-bar`} style={activeBarStyle.value} />
             <Icon icon={suffix} />
-            {showClear.value && <ClearIcon icon={clearIcon} onClear={onClear!} />}
+            {showClear.value && (
+              <ClearIcon
+                icon={clearConfig.clearIcon}
+                tabIndex={clearConfig.tabIndex}
+                label={clearConfig.label}
+                onClear={onClear!}
+              />
+            )}
           </div>
         </ResizeObserver>
       )
