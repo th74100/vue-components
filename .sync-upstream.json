@@ -33,11 +33,11 @@
           "description": "@rc-component/cascader -> @v-c/cascader"
         }
       ],
-      "last_synced_commit": "4e272d6abf3a910238eb22f0cef8d3709e38262c",
-      "last_synced_commit_short": "4e272d6abf",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/cascader@1.25.0",
-      "sync_count": 6
+      "last_synced_commit": "d09fcf3420292fd4dfffceba01567aa59bc89830",
+      "last_synced_commit_short": "d09fcf3420",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/cascader@1.26.0",
+      "sync_count": 7
     },
     {
       "name": "@rc-component/checkbox",
@@ -84,11 +84,11 @@
           "description": "@rc-component/color-picker -> @v-c/color-picker"
         }
       ],
-      "last_synced_commit": "f6a02877ad",
-      "last_synced_commit_short": "f6a02877ad",
-      "last_synced_at": "2026-08-11T00:00:00Z",
+      "last_synced_commit": "a4b0c03295e59a29ddf2f314e2281733048ba5d3",
+      "last_synced_commit_short": "a4b0c03295",
+      "last_synced_at": "2026-10-26T23:12:54Z",
       "last_synced_tag": "@rc-component/color-picker@3.1.1",
-      "sync_count": 4
+      "sync_count": 5
     },
     {
       "name": "@rc-component/dialog",
@@ -186,11 +186,11 @@
           "description": "@rc-component/input -> @v-c/input"
         }
       ],
-      "last_synced_commit": "507a04158bcbc8bca4d523e8214bd2b982f59d19",
-      "last_synced_commit_short": "507a04158b",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/input@1.3.1",
-      "sync_count": 6
+      "last_synced_commit": "39f4ae6a3baa612db631b0a0c59d8c186836bf16",
+      "last_synced_commit_short": "39f4ae6a3b",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/input@1.4.1",
+      "sync_count": 7
     },
     {
       "name": "@rc-component/input-number",
@@ -203,11 +203,11 @@
           "description": "@rc-component/input-number -> @v-c/input-number"
         }
       ],
-      "last_synced_commit": "2e4c1b7ca2473f2251bb5c5f0549326c0b329792",
-      "last_synced_commit_short": "2e4c1b7ca2",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/input-number@1.7.0",
-      "sync_count": 6
+      "last_synced_commit": "868bd31d72de99a2ef0ec5a30f36324b044f6084",
+      "last_synced_commit_short": "868bd31d72",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/input-number@1.8.0",
+      "sync_count": 7
     },
     {
       "name": "@rc-component/listy",
@@ -237,11 +237,11 @@
           "description": "@rc-component/mentions -> @v-c/mentions"
         }
       ],
-      "last_synced_commit": "7b50687dbe53934a7ec68ebc6775bc7106ee1c91",
-      "last_synced_commit_short": "7b50687dbe",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/mentions@1.13.0",
-      "sync_count": 5
+      "last_synced_commit": "f62b71a601d6065184d4a654870083bbf596ab56",
+      "last_synced_commit_short": "f62b71a601",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/mentions@1.14.1",
+      "sync_count": 6
     },
     {
       "name": "@rc-component/menu",
@@ -339,11 +339,11 @@
           "description": "@rc-component/pagination -> @v-c/pagination"
         }
       ],
-      "last_synced_commit": "a7dd4cb3d2c223fe7bf20bab94e8db75ae99224c",
-      "last_synced_commit_short": "a7dd4cb3d2",
-      "last_synced_at": "2026-10-16T00:00:00Z",
-      "last_synced_tag": "@rc-component/pagination@1.6.0",
-      "sync_count": 8
+      "last_synced_commit": "f71d381edfabb6047ff5f1f3d8a82651f1377fcd",
+      "last_synced_commit_short": "f71d381edf",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/pagination@1.7.0",
+      "sync_count": 9
     },
     {
       "name": "@rc-component/picker",
@@ -356,11 +356,11 @@
           "description": "@rc-component/picker -> @v-c/picker"
         }
       ],
-      "last_synced_commit": "97fbf8ae617122116ab14916fcef2c59fffe90b0",
-      "last_synced_commit_short": "97fbf8ae61",
-      "last_synced_at": "2026-09-25T00:00:00Z",
-      "last_synced_tag": "@rc-component/picker@1.15.0",
-      "sync_count": 7
+      "last_synced_commit": "7bcf5ebcc6bf1ab47f770dc87de7b07703d30273",
+      "last_synced_commit_short": "7bcf5ebcc6",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/picker@1.16.0",
+      "sync_count": 8
     },
     {
       "name": "@rc-component/portal",
@@ -390,11 +390,11 @@
           "description": "@rc-component/progress -> @v-c/progress"
         }
       ],
-      "last_synced_commit": "090325f5a4d975c07cb33e7c5195142c0e7cce72",
-      "last_synced_commit_short": "090325f5a4",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/progress@1.0.3",
-      "sync_count": 5
+      "last_synced_commit": "8efdfd5b5fda84c5030f284c2c1ec2da0a1dd25e",
+      "last_synced_commit_short": "8efdfd5b5f",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/progress@1.1.0",
+      "sync_count": 6
     },
     {
       "name": "@rc-component/qrcode",
@@ -475,11 +475,11 @@
           "description": "@rc-component/select -> @v-c/select"
         }
       ],
-      "last_synced_commit": "59dd34ad6e216a3935fa2b5c50521cd3f0448567",
-      "last_synced_commit_short": "59dd34ad6e",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/select@1.11.0",
-      "sync_count": 7
+      "last_synced_commit": "fcbd87ee9ef419eb677cc351744181d027a50110",
+      "last_synced_commit_short": "fcbd87ee9e",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/select@1.12.0",
+      "sync_count": 8
     },
     {
       "name": "@ant-design/react-slick",
@@ -526,11 +526,11 @@
           "description": "@rc-component/steps -> @v-c/steps"
         }
       ],
-      "last_synced_commit": "400f7cf4763a0b494d9a00f3ac97d0561502759f",
-      "last_synced_commit_short": "400f7cf476",
-      "last_synced_at": "2026-09-10T13:50:17Z",
+      "last_synced_commit": "d1060e22f700db45f223dab3622962e989408198",
+      "last_synced_commit_short": "d1060e22f7",
+      "last_synced_at": "2026-10-26T23:12:54Z",
       "last_synced_tag": "@rc-component/steps@1.2.3",
-      "sync_count": 5
+      "sync_count": 6
     },
     {
       "name": "@rc-component/switch",
@@ -543,11 +543,11 @@
           "description": "@rc-component/switch -> @v-c/switch"
         }
       ],
-      "last_synced_commit": "ac3c2855ca",
-      "last_synced_commit_short": "ac3c2855ca",
-      "last_synced_at": "2026-08-11T00:00:00Z",
+      "last_synced_commit": "dd99fb19dfd14eb97cb20839b3592ca0ed419500",
+      "last_synced_commit_short": "dd99fb19df",
+      "last_synced_at": "2026-10-26T23:12:54Z",
       "last_synced_tag": "@rc-component/switch@1.0.3",
-      "sync_count": 4
+      "sync_count": 5
     },
     {
       "name": "@rc-component/table",
@@ -594,11 +594,11 @@
           "description": "@rc-component/textarea -> @v-c/textarea"
         }
       ],
-      "last_synced_commit": "7251daeb9b",
-      "last_synced_commit_short": "7251daeb9b",
-      "last_synced_at": "2026-07-29T00:00:00Z",
-      "last_synced_tag": "@rc-component/textarea@1.2.0",
-      "sync_count": 2
+      "last_synced_commit": "47bb0fa22f836e27cb95bc87e37ea38180bea6d2",
+      "last_synced_commit_short": "47bb0fa22f",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/textarea@1.3.0",
+      "sync_count": 3
     },
     {
       "name": "@rc-component/tooltip",
@@ -662,11 +662,11 @@
           "description": "@rc-component/tree-select -> @v-c/tree-select"
         }
       ],
-      "last_synced_commit": "8691e307bc0eec6c1ed96bea3604271ea31fc8db",
-      "last_synced_commit_short": "8691e307bc",
-      "last_synced_at": "2026-09-10T13:50:17Z",
-      "last_synced_tag": "@rc-component/tree-select@1.18.0",
-      "sync_count": 6
+      "last_synced_commit": "3e05e7270a1b083d2aebc92f3e2ecde619c438fb",
+      "last_synced_commit_short": "3e05e7270a",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/tree-select@1.19.0",
+      "sync_count": 7
     },
     {
       "name": "@rc-component/trigger",
@@ -696,11 +696,11 @@
           "description": "@rc-component/upload -> @v-c/upload"
         }
       ],
-      "last_synced_commit": "c927881d6b2e9a8fcb91f81e124303e733532ada",
-      "last_synced_commit_short": "c927881d6b",
-      "last_synced_at": "2026-09-25T00:00:00Z",
+      "last_synced_commit": "2de7bbe4a8cfe7d722670cebb7e71ca9a961dd80",
+      "last_synced_commit_short": "2de7bbe4a8",
+      "last_synced_at": "2026-10-26T23:12:54Z",
       "last_synced_tag": "@rc-component/upload@1.2.0",
-      "sync_count": 7
+      "sync_count": 8
     },
     {
       "name": "@rc-component/util",
@@ -713,11 +713,11 @@
           "description": "@rc-component/util -> @v-c/util"
         }
       ],
-      "last_synced_commit": "993255ed15595875a7004033c3e8f7b892586dea",
-      "last_synced_commit_short": "993255ed15",
-      "last_synced_at": "2026-09-25T00:00:00Z",
-      "last_synced_tag": "@rc-component/util@1.13.0",
-      "sync_count": 7
+      "last_synced_commit": "e12854b74d5e15e01f04f3710bc2d2a81383f806",
+      "last_synced_commit_short": "e12854b74d",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/util@1.14.0",
+      "sync_count": 8
     },
     {
       "name": "@rc-component/virtual-list",
@@ -730,11 +730,11 @@
           "description": "@rc-component/virtual-list -> @v-c/virtual-list"
         }
       ],
-      "last_synced_commit": "7d5b52a42beb83585dfb3f744100799c673e6612",
-      "last_synced_commit_short": "7d5b52a42b",
-      "last_synced_at": "2026-10-16T00:00:00Z",
-      "last_synced_tag": "@rc-component/virtual-list@1.5.2",
-      "sync_count": 8
+      "last_synced_commit": "91057da94766140834f0f2d5fab85c2d56e670cf",
+      "last_synced_commit_short": "91057da947",
+      "last_synced_at": "2026-10-26T23:12:54Z",
+      "last_synced_tag": "@rc-component/virtual-list@1.6.0",
+      "sync_count": 9
     }
   ]
 }
