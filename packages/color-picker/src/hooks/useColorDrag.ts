@@ -135,7 +135,11 @@ function useColorDrag(
     updateOffset(e)
     document.addEventListener('mousemove', onDragMove)
     document.addEventListener('mouseup', onDragStop)
-    document.addEventListener('touchmove', onDragMove)
+    // Browsers treat document-level touch listeners as passive by default,
+    // which makes preventDefault() a no-op and lets the page scroll during a
+    // drag. The listener only exists while a drag is in progress, so opting
+    // out of passive costs nothing for normal scrolling.
+    document.addEventListener('touchmove', onDragMove, { passive: false })
     document.addEventListener('touchend', onDragStop)
     mouseMoveHandler = onDragMove
     mouseUpHandler = onDragStop
