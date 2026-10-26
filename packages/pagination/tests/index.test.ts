@@ -114,7 +114,7 @@ describe('simple mode next button', () => {
     })
 
     const next = wrapper.find('.vc-pagination-next')
-    expect(next.attributes('tabindex')).toBe('0')
+    expect(next.find('button').attributes('tabindex')).toBe('0')
     expect(next.classes()).not.toContain('vc-pagination-disabled')
 
     wrapper.unmount()

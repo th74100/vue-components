@@ -47,9 +47,9 @@ const Options = defineComponent<OptionsProps>(
       const relTarget = e.relatedTarget as HTMLInputElement | null
 
       if (
-        (relTarget
-          && relTarget.className.includes(`${props.rootPrefixCls}-item-link`))
-        || relTarget?.className.includes(`${props.rootPrefixCls}-item`)
+        relTarget?.closest?.(
+          `.${props.rootPrefixCls}-item-link, .${props.rootPrefixCls}-item`,
+        )
       ) {
         return
       }

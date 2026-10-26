@@ -12,7 +12,6 @@ import {
   computed,
   defineComponent,
   h,
-  isVNode,
   ref,
   toRef,
   watchEffect,
@@ -21,6 +20,7 @@ import isEnterOrSpaceKey from './isEnterOrSpaceKey'
 import zhCN from './locale/zh_CN'
 import Options from './Options.tsx'
 import Pager from './Pager'
+import PaginationItem from './PaginationItem'
 
 function isInteger(v: number) {
   const value = Number(v)
@@ -137,9 +137,8 @@ const Pagination = defineComponent<PaginationProps>(
       )
     }
 
-    // The accessible name now lives on the wrapping `li` (which carries
-    // `role="button"`), so the inner control is hidden from the a11y tree to
-    // avoid announcing it twice. `title` is the visual tooltip only.
+    // `PaginationItem` merges the control semantics onto the rendered control.
+    // `tabindex={-1}` keeps a single tab stop when `itemRender` wraps it.
     function getItemIcon(icon: VueNode, _label: string, title?: string) {
       const prefixCls = mergedPrefixCls.value
       let iconNode = isVueRenderable(icon)
@@ -148,7 +147,6 @@ const Pagination = defineComponent<PaginationProps>(
             <button
               type="button"
               tabindex={-1}
-              aria-hidden="true"
               title={title}
               class={`${prefixCls}-item-link`}
             />
@@ -266,13 +264,7 @@ const Pagination = defineComponent<PaginationProps>(
         'prev',
         getItemIcon(props.prevIcon, prevPageTitle, mergedShowTitle.value ? prevPageTitle : undefined),
       )
-      const nextProps: Record<string, any> = {}
-      if (!hasPrev.value || props.disabled) {
-        nextProps.disabled = true
-      }
-      return isVNode(prevButton)
-        ? cloneElement(prevButton, nextProps)
-        : prevButton
+      return prevButton
     }
 
     function renderNext(nextPage: number) {
@@ -283,13 +275,7 @@ const Pagination = defineComponent<PaginationProps>(
         'next',
         getItemIcon(props.nextIcon, nextPageTitle, mergedShowTitle.value ? nextPageTitle : undefined),
       )
-      const nextProps: Record<string, any> = {}
-      if (!hasNext.value || props.disabled) {
-        nextProps.disabled = true
-      }
-      return isVNode(nextButton)
-        ? cloneElement(nextButton, nextProps)
-        : nextButton
+      return nextButton
     }
 
     function handleGoTO(event: Event) {
@@ -407,21 +393,20 @@ const Pagination = defineComponent<PaginationProps>(
       let prev = renderPrev(prevPage.value)
       if (isVueRenderable(prev)) {
         const prevDisabled = !hasPrev.value || !allPages.value || !!disabled
-        prev = (
-          <li
-            onClick={prevHandle}
-            tabindex={prevDisabled ? undefined : 0}
-            onKeydown={runIfEnterPrev}
-            class={classNames(`${prefixCls}-prev`, itemClassName, {
+        prev = PaginationItem(
+          {
+            'onClick': prevHandle,
+            'tabIndex': prevDisabled ? null : 0,
+            'onKeyDown': runIfEnterPrev,
+            'class': classNames(`${prefixCls}-prev`, itemClassName, {
               [`${prefixCls}-disabled`]: prevDisabled,
-            })}
-            style={itemStyle}
-            aria-disabled={prevDisabled}
-            role="button"
-            aria-label={locale?.prev_page}
-          >
-            {prev}
-          </li>
+            }),
+            'style': itemStyle,
+            'aria-disabled': prevDisabled,
+            'disabled': prevDisabled,
+            'aria-label': locale?.prev_page,
+          },
+          prev,
         )
       }
 
@@ -429,21 +414,20 @@ const Pagination = defineComponent<PaginationProps>(
       if (isVueRenderable(next)) {
         const nextDisabled = !hasNext.value || !allPages.value || !!disabled
 
-        next = (
-          <li
-            onClick={nextHandle}
-            tabindex={nextDisabled ? undefined : 0}
-            onKeydown={runIfEnterNext}
-            class={classNames(`${prefixCls}-next`, itemClassName, {
+        next = PaginationItem(
+          {
+            'onClick': nextHandle,
+            'tabIndex': nextDisabled ? null : 0,
+            'onKeyDown': runIfEnterNext,
+            'class': classNames(`${prefixCls}-next`, itemClassName, {
               [`${prefixCls}-disabled`]: nextDisabled,
-            })}
-            style={itemStyle}
-            aria-disabled={nextDisabled}
-            role="button"
-            aria-label={locale?.next_page}
-          >
-            {next}
-          </li>
+            }),
+            'style': itemStyle,
+            'aria-disabled': nextDisabled,
+            'disabled': nextDisabled,
+            'aria-label': locale?.next_page,
+          },
+          next,
         )
       }
 
@@ -549,6 +533,7 @@ const Pagination = defineComponent<PaginationProps>(
             <Pager
               {...pagerProps}
               key="noPager"
+              disabled
               page={1}
               className={`${prefixCls}-item-disabled`}
             />,
@@ -585,40 +570,36 @@ const Pagination = defineComponent<PaginationProps>(
 
         if (showPrevNextJumpers) {
           jumpPrev = isVueRenderable(jumpPrevContent)
-            ? (
-                <li
-                  key="prev"
-                  onClick={jumpPrevHandle}
-                  tabindex={disabled ? undefined : 0}
-                  onKeydown={runIfEnterJumpPrev}
-                  class={classNames(`${prefixCls}-jump-prev`, {
+            ? PaginationItem(
+                {
+                  'key': 'prev',
+                  'onClick': jumpPrevHandle,
+                  'tabIndex': 0,
+                  'onKeyDown': runIfEnterJumpPrev,
+                  'class': classNames(`${prefixCls}-jump-prev`, {
                     [`${prefixCls}-jump-prev-custom-icon`]: isVueRenderable(jumpPrevIcon),
-                  })}
-                  role="button"
-                  aria-label={prevItemTitle}
-                  aria-disabled={disabled || undefined}
-                >
-                  {jumpPrevContent}
-                </li>
+                  }),
+                  'disabled': disabled,
+                  'aria-label': prevItemTitle,
+                },
+                jumpPrevContent,
               )
             : null
 
           jumpNext = isVueRenderable(jumpNextContent)
-            ? (
-                <li
-                  key="next"
-                  onClick={jumpNextHandle}
-                  tabindex={disabled ? undefined : 0}
-                  onKeydown={runIfEnterJumpNext}
-                  class={classNames(`${prefixCls}-jump-next`, {
+            ? PaginationItem(
+                {
+                  'key': 'next',
+                  'onClick': jumpNextHandle,
+                  'tabIndex': 0,
+                  'onKeyDown': runIfEnterJumpNext,
+                  'class': classNames(`${prefixCls}-jump-next`, {
                     [`${prefixCls}-jump-next-custom-icon`]: isVueRenderable(jumpNextIcon),
-                  })}
-                  role="button"
-                  aria-label={nextItemTitle}
-                  aria-disabled={disabled || undefined}
-                >
-                  {jumpNextContent}
-                </li>
+                  }),
+                  'disabled': disabled,
+                  'aria-label': nextItemTitle,
+                },
+                jumpNextContent,
               )
             : null
         }

@@ -2,6 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { PaginationProps } from './interface'
 import { classNames } from '@v-c/util'
 import { defineComponent } from 'vue'
+import PaginationItem from './PaginationItem'
 
 export interface PagerProps extends Pick<PaginationProps, 'itemRender'> {
   rootPrefixCls: string
@@ -54,31 +55,23 @@ const Pager = defineComponent<PagerProps>((props) => {
       className,
     )
 
-    // The `li` below carries `role="button"` and the accessible name, so the
-    // inner anchor is hidden from the a11y tree to avoid a duplicate reading.
-    const pager = itemRender?.(
-      page,
-      'page',
-      <a tabindex={-1} aria-hidden="true" rel="nofollow">{page}</a>,
-    )
+    const pager = itemRender?.(page, 'page', <a rel="nofollow">{page}</a>)
     const pagerLabel = `${pageLabel ?? ''} ${page}`.trim()
 
     return pager
-      ? (
-          <li
-            title={showTitle ? String(page) : undefined}
-            class={cls}
-            style={style}
-            onClick={handleClick}
-            onKeydown={handleKeyPress}
-            tabindex={disabled ? undefined : 0}
-            role="button"
-            aria-label={pagerLabel}
-            aria-current={active ? 'page' : undefined}
-            aria-disabled={disabled || undefined}
-          >
-            {pager}
-          </li>
+      ? PaginationItem(
+          {
+            'title': showTitle ? String(page) : undefined,
+            'class': cls,
+            'style': style,
+            'onClick': handleClick,
+            'onKeyDown': handleKeyPress,
+            'tabIndex': 0,
+            'disabled': disabled || !page,
+            'aria-label': pagerLabel,
+            'aria-current': active ? 'page' : undefined,
+          },
+          pager,
         )
       : null
   }
