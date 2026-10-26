@@ -27,6 +27,7 @@ export interface SelectInputProps {
   suffix?: VueNode
   clearIcon?: VueNode
   clearLabel?: string
+  clearTabIndex?: number
   removeIcon?: RenderNode
   multiple?: boolean
   displayValues: DisplayValueType[]
@@ -331,6 +332,7 @@ const SelectInput = defineComponent<SelectInputProps>(
             <button
               type="button"
               aria-label={clearLabel.value}
+              tabindex={props.clearTabIndex}
               class={clsx(`${prefixCls.value}-clear`, classNamesConfig.value?.clear)}
               style={stylesConfig.value?.clear}
               onMousedown={(e: MouseEvent) => {

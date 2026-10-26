@@ -1,5 +1,4 @@
 export { useAllowClear } from './useAllowClear'
-export type { AllowClearConfig } from './useAllowClear'
 export { default as useBaseProps, useBaseSelectProvider } from './useBaseProps'
 export type { BaseSelectContextProps } from './useBaseProps'
 export { default as useCache } from './useCache'

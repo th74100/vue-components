@@ -48,6 +48,36 @@ describe('select clear', () => {
     wrapper.unmount()
   })
 
+  it('removes the clear entry with a disabled config and honours tabIndex', async () => {
+    const onClear = vi.fn()
+    const config = { clearIcon: 'custom', label: 'Erase', tabIndex: -1 }
+    const wrapper = mount(Select, {
+      attachTo: document.body,
+      props: { value: 'a', options, onClear, allowClear: false },
+    })
+    await flushSelect()
+    const markup = wrapper.html()
+
+    await wrapper.setProps({ allowClear: { ...config, disabled: true } })
+    await flushSelect()
+    expect(wrapper.html()).toBe(markup)
+    expect(wrapper.find('.vc-select-clear').exists()).toBe(false)
+
+    await wrapper.setProps({ allowClear: config })
+    await flushSelect()
+    const clear = wrapper.find('.vc-select-clear')
+    expect(clear.attributes('aria-label')).toBe('Erase')
+    expect(clear.text()).toBe('custom')
+    expect((clear.element as HTMLButtonElement).tabIndex).toBe(-1)
+
+    await wrapper.setProps({ allowClear: { ...config, tabIndex: 0 } })
+    await flushSelect()
+    expect((wrapper.find('.vc-select-clear').element as HTMLButtonElement).tabIndex).toBe(0)
+    expect(onClear).not.toHaveBeenCalled()
+
+    wrapper.unmount()
+  })
+
   it('clears on click so keyboard activation works too', async () => {
     const onChange = vi.fn()
     const wrapper = mount(Select, {

@@ -1,4 +1,5 @@
 import type { AlignType, BuildInPlacements } from '@v-c/trigger'
+import type { AllowClearConfig } from '@v-c/util'
 import type { VueNode } from '@v-c/util/dist/type'
 import type { ScrollConfig, ScrollTo } from '@v-c/virtual-list'
 import type { CSSProperties, StyleValue } from 'vue'
@@ -179,7 +180,7 @@ export interface BaseSelectProps extends BaseSelectPrivateProps {
   tokenSeparators?: string[] | ((input: string) => string[])
 
   // >>> Icons
-  allowClear?: boolean | { clearIcon?: VueNode, label?: string }
+  allowClear?: boolean | AllowClearConfig
   prefix?: VueNode
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: RenderNode
@@ -731,6 +732,7 @@ export const BaseSelect = defineComponent<
       const mergedAllowClear = allowClearConfig.value.allowClear
       const clearNode = allowClearConfig.value.clearIcon
       const clearLabel = allowClearConfig.value.label
+      const clearTabIndex = allowClearConfig.value.tabIndex
       // ========================== Custom Input ==========================
       // Only works in `combobox`
       const customizeInputElement = (mode.value === 'combobox' && typeof getInputElement.value === 'function' && getInputElement.value()) || null
@@ -792,6 +794,7 @@ export const BaseSelect = defineComponent<
           suffix={mergedSuffixIcon}
           clearIcon={clearNode}
           clearLabel={clearLabel}
+          clearTabIndex={clearTabIndex}
           // Type or mode
           multiple={multiple.value}
           mode={mode.value}

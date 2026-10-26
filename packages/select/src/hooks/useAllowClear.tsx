@@ -1,9 +1,10 @@
+import type { AllowClearConfig } from '@v-c/util'
 import type { Ref } from 'vue'
 import type { DisplayValueType, Mode } from '../interface.ts'
-import { isVueRenderable } from '@v-c/util'
+import { isVueRenderable, useAllowClear as useClearConfig } from '@v-c/util'
 import { computed } from 'vue'
 
-export interface AllowClearConfig {
+interface ClearInfo extends AllowClearConfig {
   allowClear: boolean
   clearIcon: any
   label: string
@@ -12,29 +13,21 @@ export interface AllowClearConfig {
 export function useAllowClear(
   _prefixCls: Ref<string>,
   displayValues: Ref<DisplayValueType[]>,
-  allowClear?: Ref<boolean | { clearIcon?: any, label?: string }>,
+  allowClear?: Ref<boolean | AllowClearConfig | undefined>,
   clearIcon?: Ref<any>,
   disabled?: Ref<boolean>,
   mergedSearchValue?: Ref<string | undefined>,
   mode?: Ref<Mode | undefined>,
 ) {
-  // Convert boolean to object first
-  const allowClearConfig = computed<Partial<AllowClearConfig>>(() => {
-    if (typeof allowClear?.value === 'boolean') {
-      return { allowClear: allowClear.value }
-    }
-    if (allowClear?.value && typeof allowClear.value === 'object') {
-      return allowClear.value
-    }
-    return { allowClear: false }
-  })
+  const allowClearConfig = useClearConfig(() => allowClear?.value)
 
-  return computed(() => {
+  return computed<ClearInfo>(() => {
     const mergedAllowClear = !disabled?.value
-      && allowClearConfig.value?.allowClear !== false
+      && !allowClearConfig.value.disabled
       && (displayValues.value.length || mergedSearchValue?.value)
       && !(mode?.value === 'combobox' && mergedSearchValue?.value === '')
     return {
+      ...allowClearConfig.value,
       allowClear: !!mergedAllowClear,
       clearIcon: mergedAllowClear
         ? isVueRenderable(allowClearConfig.value.clearIcon)
@@ -44,6 +37,6 @@ export function useAllowClear(
             : '×'
         : null,
       label: mergedAllowClear ? (allowClearConfig.value.label ?? 'Clear') : '',
-    } as AllowClearConfig
+    }
   })
 }
