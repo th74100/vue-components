@@ -1,6 +1,6 @@
 import type { TextAreaProps } from './interface'
 import { BaseInput, resolveOnChange, useCount } from '@v-c/input'
-import { clsx } from '@v-c/util'
+import { clsx, useAllowClear } from '@v-c/util'
 import { KeyCodeStr } from '@v-c/util/dist/KeyCode'
 import omit from '@v-c/util/dist/omit'
 import { getAttrStyleAndClass, toPropsRefs } from '@v-c/util/dist/props-util'
@@ -29,6 +29,7 @@ const TextArea = defineComponent<TextAreaProps>(
     const textareaResized = shallowRef<boolean>()
 
     // =============================== Ref ================================
+    const clearConfig = useAllowClear(() => props.allowClear)
     const holderRef = shallowRef()
     const resizableTextAreaRef = shallowRef()
     const getTextArea = () => resizableTextAreaRef.value?.textArea
@@ -229,7 +230,7 @@ const TextArea = defineComponent<TextAreaProps>(
           </>
         )
       }
-      const isPureTextArea = !autoSize && !showCount && !allowClear
+      const isPureTextArea = !autoSize && !showCount && clearConfig.value.disabled
 
       const textareaProps = {
         onKeydown: handleKeyDown,
@@ -250,7 +251,7 @@ const TextArea = defineComponent<TextAreaProps>(
             ...classNames,
             affixWrapper: clsx(classNames?.affixWrapper, {
               [`${prefixCls}-show-count`]: showCount,
-              [`${prefixCls}-textarea-allow-clear`]: allowClear,
+              [`${prefixCls}-textarea-allow-clear`]: !clearConfig.value.disabled,
             }),
           }}
           disabled={disabled}

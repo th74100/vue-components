@@ -15,41 +15,67 @@ function getTabOrder(root: Element) {
 }
 
 describe('input allowClear', () => {
-  it.each([false, undefined])(
-    'distinguishes allowClear=%s from a disabled clear button',
-    async (allowClear) => {
+  it.each([undefined, 'suffix'])(
+    'removes the clear entry without changing other suffixes: %s',
+    async (suffix) => {
+      const onChange = vi.fn()
+      const onClear = vi.fn()
+      const config = Object.freeze({
+        clearIcon: 'custom',
+        tabIndex: -1,
+        label: 'Erase',
+      })
       const wrapper = mount(Input, {
-        props: { defaultValue: 'test', suffix: 'suffix', allowClear },
+        props: { defaultValue: 'test', suffix, onChange, onClear, allowClear: false },
       })
-      expect(wrapper.find('button').exists()).toBe(false)
-      expect(wrapper.find('.vc-input-affix-wrapper').classes()).not.toContain(
-        'vc-input-affix-wrapper-input-with-clear-btn',
-      )
+      const disabledMarkup = wrapper.html()
 
-      await wrapper.setProps({
-        allowClear: { disabled: true, clearIcon: 'clear', tabIndex: -1 },
-      })
+      await wrapper.setProps({ allowClear: { ...config, disabled: true } })
+      expect(wrapper.html()).toBe(disabledMarkup)
+      expect(wrapper.find('button').exists()).toBe(false)
+      expect(wrapper.find('input').element.value).toBe('test')
+      expect(onChange).not.toHaveBeenCalled()
+      expect(onClear).not.toHaveBeenCalled()
+
+      await wrapper.setProps({ allowClear: config })
       const clearButton = wrapper.find('button')
-      expect(clearButton.classes()).toContain('vc-input-clear-icon-hidden')
-      expect(clearButton.text()).toBe('clear')
+      expect(clearButton.attributes('aria-label')).toBe('Erase')
+      expect(clearButton.text()).toBe('custom')
       expect(clearButton.element.tabIndex).toBe(-1)
-      expect(wrapper.find('.vc-input-affix-wrapper').classes()).toContain(
-        'vc-input-affix-wrapper-input-with-clear-btn',
-      )
-
-      await wrapper.setProps({ allowClear: true })
-      expect(wrapper.find('button').element).toBe(clearButton.element)
-      expect(clearButton.classes()).not.toContain('vc-input-clear-icon-hidden')
-      expect(clearButton.text()).toBe('✖')
-      expect(clearButton.element.tabIndex).toBe(0)
-
-      await wrapper.setProps({ allowClear })
-      expect(wrapper.find('button').exists()).toBe(false)
-      expect(wrapper.find('.vc-input-affix-wrapper').classes()).not.toContain(
-        'vc-input-affix-wrapper-input-with-clear-btn',
-      )
+      await clearButton.trigger('click')
+      expect(wrapper.find('input').element.value).toBe('')
+      expect(onChange).toHaveBeenCalledTimes(1)
+      expect(onClear).toHaveBeenCalledTimes(1)
+      expect(config).toEqual({
+        clearIcon: 'custom',
+        tabIndex: -1,
+        label: 'Erase',
+      })
     },
   )
+
+  it('preserves the input element when a suffix keeps the wrapper mounted', async () => {
+    const wrapper = mount(Input, {
+      props: { suffix: 'suffix', defaultValue: 'test', allowClear: true },
+      attachTo: document.body,
+    })
+    const input = wrapper.find('input').element
+    input.focus()
+    input.setSelectionRange(1, 3)
+    await wrapper.setProps({ allowClear: { disabled: true } })
+    expect(wrapper.find('input').element).toBe(input)
+    expect(document.activeElement).toBe(input)
+    expect(input.selectionStart).toBe(1)
+    expect(input.selectionEnd).toBe(3)
+    wrapper.unmount()
+  })
+
+  it('uses the default accessible name', () => {
+    const wrapper = mount(Input, {
+      props: { defaultValue: 'test', allowClear: true },
+    })
+    expect(wrapper.find('button').attributes('aria-label')).toBe('Clear')
+  })
 
   it.each([true, {}, { tabIndex: 0 }])(
     'keeps the clear button keyboard accessible with %j',

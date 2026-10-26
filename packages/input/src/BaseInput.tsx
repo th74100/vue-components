@@ -1,8 +1,7 @@
 import type { BaseInputProps } from './interface'
-import { clsx, isVueRenderable } from '@v-c/util'
+import { clsx, isVueRenderable, useAllowClear } from '@v-c/util'
 import { filterEmpty } from '@v-c/util/dist/props-util'
 import { computed, createVNode, defineComponent, Fragment, shallowRef } from 'vue'
-import useAllowClear from './hooks/useAllowClear'
 import { hasAddon, hasPrefixSuffix } from './utils/commonUtils'
 
 export interface HolderRef {
@@ -21,7 +20,7 @@ const BaseInput = defineComponent<
       }
     }
     const hasAffix = computed(() => hasPrefixSuffix(props))
-    const allowClearInfo = useAllowClear(() => props.allowClear)
+    const allowClearConfig = useAllowClear(() => props.allowClear)
 
     // ======================== Ref ======================== //
     const groupRef = shallowRef<HTMLDivElement>()
@@ -66,26 +65,25 @@ const BaseInput = defineComponent<
       })
       // ================== Prefix & Suffix ================== //
       if (hasAffix.value) {
-        const [showAllowClear, allowClearConfig] = allowClearInfo.value
+        const clearConfig = allowClearConfig.value
+        const showAllowClear = !clearConfig.disabled
         let clearIcon: any = null
 
         // ================== Clear Icon ================== //
         if (showAllowClear) {
-          const needClear = !disabled && !readOnly && value && !allowClearConfig.disabled
+          const needClear = !disabled && !readOnly && value
           const clearIconCls = `${prefixCls}-clear-icon`
-          const iconNode = isVueRenderable(allowClearConfig.clearIcon)
-            ? allowClearConfig.clearIcon
+          const iconNode = isVueRenderable(clearConfig.clearIcon)
+            ? clearConfig.clearIcon
             : '✖'
 
           clearIcon = (
             // rc-input#168: keep clear button reachable by keyboard.
             <button
               type="button"
-              disabled={allowClearConfig.disabled || undefined}
-              tabindex={allowClearConfig.tabIndex}
+              tabindex={clearConfig.tabIndex}
+              aria-label={clearConfig.label ?? 'Clear'}
               onClick={(event) => {
-                if (allowClearConfig.disabled)
-                  return
                 handleReset?.(event)
                 onClear?.()
               }}

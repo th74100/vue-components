@@ -74,7 +74,13 @@ export function hasAddon(props: BaseInputProps | InputProps) {
 }
 
 export function hasPrefixSuffix(props: BaseInputProps | InputProps) {
-  return isVueRenderable(props.prefix) || isVueRenderable(props.suffix) || Boolean(props.allowClear)
+  return (
+    isVueRenderable(props.prefix)
+    || isVueRenderable(props.suffix)
+    || (typeof props.allowClear === 'object'
+      ? !!props.allowClear && !props.allowClear.disabled
+      : !!props.allowClear)
+  )
 }
 
 export function resolveOnChange<E extends HTMLInputElement | HTMLTextAreaElement>(

@@ -1,3 +1,4 @@
+import type { AllowClearConfig } from '@v-c/util'
 import type { InputFocusOptions } from '@v-c/util/dist/Dom/focus'
 import type {
   ChangeEventHandler,
@@ -36,7 +37,7 @@ export interface CommonInputProps {
     suffix?: CSSProperties
     clear?: CSSProperties
   }
-  allowClear?: boolean | { clearIcon?: VueNode, disabled?: boolean, tabIndex?: number }
+  allowClear?: boolean | AllowClearConfig
 }
 
 type DataAttr = Record<`data-${string}`, string>
