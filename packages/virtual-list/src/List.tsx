@@ -7,10 +7,11 @@ import type { ExtraRenderInfo } from './interface'
 import type { ScrollBarDirectionType, ScrollBarRef } from './ScrollBar'
 import ResizeObserver from '@v-c/resize-observer'
 import { pureAttrs } from '@v-c/util/dist/props-util'
-import { computed, defineComponent, ref, shallowRef, toRaw, unref, watch } from 'vue'
+import { computed, defineComponent, ref, shallowRef, toRaw, toRef, unref, watch } from 'vue'
 import Filler from './Filler'
 import useChildren from './hooks/useChildren'
 import useDiffItem from './hooks/useDiffItem'
+import useDragEdgeScroll from './hooks/useDragEdgeScroll'
 import useFrameWheel from './hooks/useFrameWheel'
 import { useGetSize } from './hooks/useGetSize'
 import useHeights from './hooks/useHeights'
@@ -466,6 +467,20 @@ export default defineComponent({
     useScrollDrag(
       inVirtual,
       componentRef,
+      (offset) => {
+        syncScrollTop(top => top + offset)
+      },
+    )
+
+    // Native HTML5 drag (e.g. a draggable Tree node) toward the edge: the
+    // `mousemove` path above is not fired during a native drag, and the native
+    // drag-to-edge autoscroll is disabled by `overflow: hidden`, so drive it from
+    // the drag events here instead.
+    useDragEdgeScroll(
+      inVirtual,
+      componentRef,
+      toRef(() => props.height),
+      itemHeight,
       (offset) => {
         syncScrollTop(top => top + offset)
       },
