@@ -322,6 +322,7 @@ const AjaxUploader = defineComponent<UploadProps>(
     }
 
     const events = computed(() => {
+      const isInteractive = props.openFileDialogOnClick && !props.hasControlInside
       return props.disabled
         ? {}
         : {
@@ -331,7 +332,7 @@ const AjaxUploader = defineComponent<UploadProps>(
             onMouseLeave: props.onMouseLeave,
             onDrop: onFileDrop,
             onDragover: onFileDragOver,
-            tabIndex: props.hasControlInside ? undefined : '0',
+            tabIndex: isInteractive ? '0' : undefined,
           }
     })
 
@@ -411,7 +412,7 @@ const AjaxUploader = defineComponent<UploadProps>(
       // 处理自定义组件
       const Tag = component as any
       return (
-        <Tag class={cls.value} {...events.value} role={hasControlInside ? undefined : 'button'} style={style}>
+        <Tag class={cls.value} {...events.value} role={openFileDialogOnClick && !hasControlInside ? 'button' : undefined} style={style}>
           <input
             {...pickAttrs(otherProps, { aria: true, data: true })}
             id={id}

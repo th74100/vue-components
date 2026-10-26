@@ -1710,4 +1710,17 @@ describe('uploader', () => {
       'button',
     )
   })
+
+  it('should not be focusable and doesn\'t have role=button with openFileDialogOnClick=false', () => {
+    const wrapper = mount(Upload, {
+      props: {
+        openFileDialogOnClick: false,
+      },
+    })
+
+    expect(wrapper.find('span').element.tabIndex).not.toBe(0)
+    expect(wrapper.find('span').element.getAttribute('role')).not.toBe(
+      'button',
+    )
+  })
 })
