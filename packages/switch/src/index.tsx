@@ -48,7 +48,7 @@ const Switch = defineComponent<SwitchProps>(
     ) {
       let mergedChecked = innerChecked.value
 
-      if (!props.disabled) {
+      if (!props.disabled && newChecked !== innerChecked.value) {
         mergedChecked = newChecked
         setInnerChecked(mergedChecked)
         props?.onChange?.(mergedChecked, event)

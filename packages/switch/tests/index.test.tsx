@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import Switch from '../src'
 
 describe('switch event handlers', () => {
@@ -50,5 +51,29 @@ describe('switch event handlers', () => {
     expect(btn.getAttribute('onChange')).toBeNull()
     expect(btn.getAttribute('onUpdate:checked')).toBeNull()
     expect(btn.getAttribute('onKeyDown')).toBeNull()
+  })
+
+  it.each([false, true])('does not emit a change for an arrow that retains %s', async (checked) => {
+    const onChange = vi.fn()
+    const onKeyDown = vi.fn()
+    const wrapper = mount(() => (
+      <Switch defaultChecked={checked} onChange={onChange} onKeyDown={onKeyDown} />
+    ))
+    const button = wrapper.find('button')
+    const keyDown = async (which: number) => {
+      const event = new KeyboardEvent('keydown', { bubbles: true })
+      Object.defineProperty(event, 'which', { value: which })
+      button.element.dispatchEvent(event)
+      await nextTick()
+    }
+
+    await keyDown(checked ? 39 : 37)
+    expect(onChange).not.toHaveBeenCalled()
+    expect(onKeyDown).toHaveBeenCalledTimes(1)
+    expect(button.attributes('aria-checked')).toBe(String(checked))
+
+    await keyDown(checked ? 37 : 39)
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenLastCalledWith(!checked, expect.any(KeyboardEvent))
   })
 })
