@@ -1,4 +1,5 @@
 import type { DecimalClass, ValueType } from '@v-c/mini-decimal'
+import type { AllowClearConfig } from '@v-c/util'
 import type { InputFocusOptions } from '@v-c/util/dist/Dom/focus'
 import getMiniDecimal, {
   getNumberPrecision,
@@ -6,7 +7,7 @@ import getMiniDecimal, {
   toFixed,
   validateNumber,
 } from '@v-c/mini-decimal'
-import { clsx, isVueRenderable } from '@v-c/util'
+import { clsx, isVueRenderable, useAllowClear } from '@v-c/util'
 import { triggerFocus } from '@v-c/util/dist/Dom/focus'
 import { KeyCodeStr } from '@v-c/util/dist/KeyCode'
 import omit from '@v-c/util/dist/omit'
@@ -56,13 +57,7 @@ export interface InputNumberProps<T extends ValueType = ValueType> {
   readOnly?: boolean
   prefix?: any
   suffix?: any
-  allowClear?:
-    | boolean
-    | {
-      clearIcon?: any
-      disabled?: boolean
-      label?: string
-    }
+  allowClear?: boolean | AllowClearConfig
   upHandler?: any
   downHandler?: any
   keyboard?: boolean
@@ -129,6 +124,7 @@ function getDecimalIfValidate(value: ValueType) {
 const InputNumber = defineComponent<InputNumberProps>(
   (props = defaults, { attrs, slots, expose, emit }) => {
     const focus = shallowRef(false)
+    const allowClearConfig = useAllowClear(() => props.allowClear)
     const userTypingRef = shallowRef(false)
     const compositionRef = shallowRef(false)
     const shiftKeyRef = shallowRef(false)
@@ -622,7 +618,6 @@ const InputNumber = defineComponent<InputNumberProps>(
         controls = defaults.controls,
         mode = defaults.mode,
         placeholder,
-        allowClear,
       } = props
 
       const mergedPrefixCls = prefixCls || defaults.prefixCls!
@@ -641,15 +636,16 @@ const InputNumber = defineComponent<InputNumberProps>(
       const downNode = slots.downHandler?.() ?? props.downHandler
 
       // >>> Clear
-      const clearConfig = allowClear && typeof allowClear === 'object' ? allowClear : { disabled: allowClear !== true }
+      const clearConfig = allowClearConfig.value
       const showClear = !disabled && !readOnly && clearConfig.disabled !== true && String(inputValue.value).length > 0
       const hasSuffix = isVueRenderable(suffixNode)
       const clearIconCls = `${mergedPrefixCls}-clear-icon`
 
-      const clearNode = allowClear && (
+      const clearNode = !clearConfig.disabled && (
         <button
           type="button"
           aria-label={clearConfig.label ?? 'Clear'}
+          tabindex={clearConfig.tabIndex}
           disabled={!showClear}
           class={clsx(
             clearIconCls,
@@ -812,7 +808,7 @@ const InputNumber = defineComponent<InputNumberProps>(
             {...inputAttrs as any}
           />
 
-          {(allowClear || hasSuffix) && (
+          {(!clearConfig.disabled || hasSuffix) && (
             <div class={clsx(`${mergedPrefixCls}-suffix`, classNames?.suffix)} style={styles?.suffix}>
               {clearNode}
               {suffixNode}

@@ -240,7 +240,6 @@ describe('input-number allowClear', () => {
   it.each([
     ['disabled', { disabled: true }],
     ['readOnly', { readOnly: true }],
-    ['allowClear.disabled', { allowClear: { disabled: true } }],
   ])('disables the clear action when %s', async (_name, extraProps) => {
     const onChange = vi.fn()
     const onClear = vi.fn()
@@ -368,5 +367,62 @@ describe('input-number renderable guards', () => {
     const emptyWrapper = mount(InputNumber, { props: { prefix: '', suffix: '' } })
     expect(emptyWrapper.find('.vc-input-number-prefix').exists()).toBe(false)
     expect(emptyWrapper.find('.vc-input-number-suffix').exists()).toBe(false)
+  })
+})
+
+describe('input-number unified clear configuration', () => {
+  it.each([undefined, 'suffix'])('removes only the clear entry with suffix %s', async (suffix) => {
+    const onChange = vi.fn()
+    const onClear = vi.fn()
+    const config = Object.freeze({ clearIcon: 'custom', tabIndex: -1, label: 'Erase' })
+    const wrapper = mount(InputNumber, {
+      props: { defaultValue: 12, prefix: 'prefix', suffix, onChange, onClear, allowClear: false },
+    })
+    const disabledMarkup = wrapper.html()
+
+    await wrapper.setProps({ allowClear: { ...config, disabled: true } })
+    expect(wrapper.html()).toBe(disabledMarkup)
+    expect(wrapper.find(CLEAR_CLS).exists()).toBe(false)
+    expect(wrapper.find('input').element.value).toBe('12')
+    expect(onChange).not.toHaveBeenCalled()
+    expect(onClear).not.toHaveBeenCalled()
+
+    await wrapper.setProps({ allowClear: config })
+    const button = wrapper.find<HTMLButtonElement>(CLEAR_CLS)
+    expect(button.attributes('aria-label')).toBe('Erase')
+    expect(button.text()).toBe('custom')
+    expect(button.element.tabIndex).toBe(-1)
+    await button.trigger('click')
+    expect(wrapper.find('input').element.value).toBe('')
+    expect(onChange).toHaveBeenCalledWith(null)
+    expect(onClear).toHaveBeenCalledTimes(1)
+  })
+
+  it('updates tabIndex independently of the input and retains focus while toggling', async () => {
+    const wrapper = mount(InputNumber, {
+      props: { defaultValue: 12, allowClear: { tabIndex: -1 } },
+      attrs: { tabindex: 3 },
+      attachTo: document.body,
+    })
+    const input = wrapper.find('input').element
+    input.focus()
+    await wrapper.setProps({ allowClear: { disabled: true } })
+    expect(wrapper.find('input').element).toBe(input)
+    expect(document.activeElement).toBe(input)
+    await wrapper.setProps({ allowClear: { tabIndex: 0 } })
+    const button = wrapper.find<HTMLButtonElement>(CLEAR_CLS)
+    expect(button.attributes('aria-label')).toBe('Clear')
+    expect(button.element.tabIndex).toBe(0)
+    expect(input.tabIndex).toBe(3)
+  })
+
+  it('renders zero step handlers', () => {
+    const wrapper = mount(InputNumber, {
+      props: { defaultValue: 2, upHandler: 0, downHandler: 0 },
+    })
+    const up = wrapper.find('[aria-label="Increase Value"]')
+    const down = wrapper.find('[aria-label="Decrease Value"]')
+    expect(up.text()).toBe('0')
+    expect(down.text()).toBe('0')
   })
 })
